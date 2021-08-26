@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1ed15b5f-0d38-46ec-af05-977b2034cbb4" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="e0448238-a6f5-470e-a7b0-38c2ba7a3ae8" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="1r2a3j4a5n" database="poc1db" />
+	</db:config>
+	<flow name="mysqldemoFlow" doc:id="62e1b7fd-3cf3-4ee1-824b-5b5af7ca43fb" >
+		<http:listener doc:name="Listener" doc:id="e5700ddb-81db-4b40-8437-0e1ea0f99955" config-ref="HTTP_Listener_config" path="/customer"/>
+		<db:select doc:name="Select" doc:id="7ecd0dfa-b020-46d2-b1e9-70ea2d2d03eb" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM poc1db.customer;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="88b9606d-f9b1-4ed0-809d-2ada43a41a41" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mysqldemoFlow1" doc:id="3861ad21-3e3a-487a-ad76-296fb4732d08" >
+		<http:listener doc:name="Listener" doc:id="ca73703e-8e47-4c28-9ed4-33fc126a394d" config-ref="HTTP_Listener_config" path="/customer/{id}"/>
+		<db:select doc:name="Select" doc:id="e71e8d91-7f3a-4674-bd9e-1220fe903040" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM poc1db.customer where customerId = :id;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+       id: attributes.uriParams.id
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="ce481f02-be3f-4e19-961b-f3afb9f5faa8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="mysqldemoFlow2" doc:id="4005f7fe-92ad-4bec-b902-4e64fa367b86" >
+		<http:listener doc:name="Listener" doc:id="6ac81fb9-1880-4e42-8f7c-292e9a69c555" config-ref="HTTP_Listener_config" path="/customer" allowedMethods="POST"/>
+		<db:insert doc:name="Insert" doc:id="b7562f39-88a0-4fb6-9624-2f29a82151a9" config-ref="Database_Config">
+			<db:sql ><![CDATA[Insert into poc1db.customer (customerid,fname,lname,age,addresh) values (:customerid,:fname,:lname,:age,:addresh);]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	fname: payload.fname,
+	lname: payload.lname,
+	customerid:payload.customerid,
+	age: payload.age,
+	addresh: payload.addresh
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="fc8dcae7-386d-42ef-9bb6-d528fba3f9fe" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
