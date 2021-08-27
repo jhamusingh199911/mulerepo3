@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
@@ -30,20 +32,20 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-				     <cloudHubDeployment>
-				         <uri>https://anypoint.mulesoft.com</uri>
-				         <muleVersion>${mule.version}</muleVersion>
-				         <!-- Deploy User Parameter -->
-				         <username>${anypoint.username}</username>
-				         <password>${anypoint.password}</password>
-				         
-				         <enviroment>${env}</enviroment>
-				         <applicationName>${appname}</applicationName>
-				         <businessGroup>${business}</businessGroup>
-				         <workerType>${vcore}</workerType>
-				         <workers>${workers}</workers>
-				         <objectStoreV2>true</objectStoreV2>
-				         </cloudHubDeployment>
+					<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>4.3.0</muleVersion>
+						<!-- Deploy User Parameter -->
+						<username>jhamusingh199911</username>
+						<password>1r2a3j4a5N.</password>
+
+						<enviroment>Sandbox</enviroment>
+						<applicationName>mysqldemo</applicationName>
+						<businessGroup>${business}</businessGroup>
+						<workerType>micro</workerType>
+						<workers>1</workers>
+						
+					</cloudHubDeployment>
 					<sharedLibraries>
 						<sharedLibrary>
 							<groupId>mysql</groupId>
