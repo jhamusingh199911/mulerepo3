@@ -34,17 +34,17 @@
 				<configuration>
 					<cloudHubDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>4.3.0</muleVersion>
+						<muleVersion>${mule.version}</muleVersion>
 						<!-- Deploy User Parameter -->
-						<username>jhamusingh199911</username>
-						<password>1r2a3j4a5N.</password>
+						<username>${anypoint.username}</username>
+						<password>${anypoint.password}</password>
 
-						<enviroment>Sandbox</enviroment>
-						<applicationName>mysqldemo</applicationName>
+						<enviroment>${env}</enviroment>
+						<applicationName>${appname}</applicationName>
 						<businessGroup>${business}</businessGroup>
-						<workerType>micro</workerType>
-						<workers>1</workers>
-						
+						<workerType>${vCore}</workerType>
+						<workers>${workers}</workers>
+						<objectStoreV2>true</objectStoreV2>
 					</cloudHubDeployment>
 					<sharedLibraries>
 						<sharedLibrary>
